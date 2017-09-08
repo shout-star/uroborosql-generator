@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="jp.co.future.uroborosql.store" level="ERROR" />
+    <logger name="jp.co.future.uroborosql.generator" level="INFO" />
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
