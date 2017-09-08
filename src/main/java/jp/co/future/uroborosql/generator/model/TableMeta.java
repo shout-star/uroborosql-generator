@@ -105,10 +105,11 @@ public class TableMeta {
     }
 
     public Set<String> getImports() {
-        return new LinkedHashSet<>(columnMetaList.stream()
+        return columnMetaList.stream()
                 .map(ColumnMeta::getJavaType)
+                .distinct()
                 .sorted()
-                .collect(Collectors.toList()));
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public boolean getHasLockVersion() {
