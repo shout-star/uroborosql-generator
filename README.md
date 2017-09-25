@@ -1,6 +1,6 @@
 # uroboroSQL Generator
 
-This is a source generator for uroboroSQL users.
+This is a source generator for [uroboroSQL](https://github.com/future-architect/uroborosql/) users.
 
 <img src="https://future-architect.github.io/uroborosql-doc//images/logo.png" style="max-width: 600px;" alt="uroboroSQL" />
 
