@@ -10,23 +10,31 @@ public class EntityConfig {
     }
 
     public String getProperty(String key) {
+        String val = System.getProperty(key);
+        if (val != null) {
+            return val;
+        }
         return props.getProperty(key);
     }
 
     public String getPackageName() {
-        return props.getProperty("package.name");
+        return getProperty("package.name");
+    }
+
+    public String getOutputDir() {
+        return getProperty("output.dir");
     }
 
     public String getAuthorName() {
-        return props.getProperty("author.name");
+        return getProperty("author.name");
     }
 
     public String getBaseModelName() {
-        return props.getProperty("base.model.name");
+        return getProperty("base.model.name");
     }
 
     public String getLockVersionName() {
-        return props.getProperty("lock.version.name");
+        return getProperty("lock.version.name");
     }
 
 }

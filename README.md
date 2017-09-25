@@ -1,10 +1,21 @@
 # uroboroSQL Generator
 
+This is a source generator for uroboroSQL users.
+
 <img src="https://future-architect.github.io/uroborosql-doc//images/logo.png" style="max-width: 600px;" alt="uroboroSQL" />
 
 ## Generate entity classes
 
 ### configuration
+
+src/main/resources/db-config.properties
+
+```properties
+db.url=jdbc:h2:file:./src/test/resources/db/petclinic;AUTOCOMMIT=FALSE
+db.user=sa
+db.password=
+```
+
 src/main/resources/entity-config.properties
 
 ```properties
@@ -31,6 +42,12 @@ lock.version.name=lock_version
 ```
 $ mvn -Pentity
 ```
+
+
+```
+$ mvn -Pentity -Dpackage.name=com.example
+```
+
 
 ## License
 
