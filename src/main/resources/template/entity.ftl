@@ -35,10 +35,20 @@ public class ${entityName}<#if baseModelName?has_content> extends ${baseModelSim
 </#list>
 
 <#list columnMetaList as columnMeta>
+    /**
+     * Get <#if columnMeta.remarks?has_content>${columnMeta.remarks}<#else>${columnMeta.columnName}</#if>.
+     *
+     * @return <#if columnMeta.remarks?has_content>${columnMeta.remarks}<#else>${columnMeta.columnName}</#if>
+     */
     public ${columnMeta.javaSimpleType} get${columnMeta.methodName}() {
         return ${columnMeta.fieldName};
     }
 
+    /**
+     * Set <#if columnMeta.remarks?has_content>${columnMeta.remarks}<#else>${columnMeta.columnName}</#if>.
+     *
+     * @param ${columnMeta.fieldName} <#if columnMeta.remarks?has_content>${columnMeta.remarks}<#else>${columnMeta.columnName}</#if>
+     */
     public void set${columnMeta.methodName}(${columnMeta.javaSimpleType} ${columnMeta.fieldName}) {
         this.${columnMeta.fieldName} = ${columnMeta.fieldName};
     }

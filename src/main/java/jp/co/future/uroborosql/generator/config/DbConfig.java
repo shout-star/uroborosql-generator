@@ -29,4 +29,8 @@ public class DbConfig {
         return getProperty("db.password");
     }
 
+    public String getSchema() {
+    	return getProperty("db.schema");
+    }
+
 }
