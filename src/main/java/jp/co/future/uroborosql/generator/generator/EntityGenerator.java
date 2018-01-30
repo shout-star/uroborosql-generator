@@ -2,6 +2,7 @@ package jp.co.future.uroborosql.generator.generator;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import jp.co.future.uroborosql.config.DefaultSqlConfig;
+import jp.co.future.uroborosql.UroboroSQL;
 import jp.co.future.uroborosql.config.SqlConfig;
 import jp.co.future.uroborosql.converter.EntityResultSetConverter;
 import jp.co.future.uroborosql.generator.config.DbConfig;
@@ -41,10 +42,10 @@ public class EntityGenerator extends AbstractGenerator {
 		EntityConfig entityConfig = new EntityConfig(loadProperties("entity-config.properties"));
 		DbConfig dbConfig = new DbConfig(loadProperties("db-config.properties"));
 
-		SqlConfig sqlConfig = DefaultSqlConfig.getConfig(
+		SqlConfig sqlConfig = UroboroSQL.builder(
 				dbConfig.getUrl(),
 				dbConfig.getUser(),
-				dbConfig.getPassword());
+				dbConfig.getPassword()).build();
 
 		final DatabaseMetaData metaData = getDatabaseMetaData(sqlConfig);
 
@@ -66,11 +67,11 @@ public class EntityGenerator extends AbstractGenerator {
 						.setColumnMetaList(getColumnMetaList(metaData, tableMeta, entityConfig)))
 				.forEach(tableMeta -> {
 					try {
+						tableMeta.setEntityConfig(entityConfig);
 						Path filePath = Paths.get(dirPath.toString(),
 								tableMeta.getEntityName() + ".java");
-
-						tableMeta.setEntityConfig(entityConfig);
-						template.process(tableMeta, new OutputStreamWriter(Files.newOutputStream(filePath)));
+						template.process(tableMeta,
+								new OutputStreamWriter(Files.newOutputStream(filePath), Charset.forName("UTF-8")));
 						LOG.info("create " + tableMeta.getEntityName());
 					} catch (TemplateException | IOException e) {
 						throw new UroborosqlGeneratorException(e);
@@ -105,9 +106,9 @@ public class EntityGenerator extends AbstractGenerator {
 	private List<TableMeta> getTableMetaList(final DatabaseMetaData metaData,
 			final String schemaName,
 			final EntityConfig entityConfig) {
-		try {
-			String[] types = { "TABLE" };
-			ResultSet rs = metaData.getTables(null, schemaName, "%", types);
+		String[] types = { "TABLE" };
+
+		try (ResultSet rs = metaData.getTables(null, schemaName, "%", types)) {
 			EntityResultSetConverter<TableMeta> converter = new EntityResultSetConverter<>(TableMeta.class,
 					new PropertyMapperManager());
 
@@ -157,11 +158,10 @@ public class EntityGenerator extends AbstractGenerator {
 		EntityResultSetConverter<ColumnMeta> converter = new EntityResultSetConverter<>(ColumnMeta.class,
 				new PropertyMapperManager());
 
-		try {
-			ResultSet rs = metaData.getColumns(null,
-					tableMeta.getTableSchem(),
-					tableMeta.getTableName(),
-					"%");
+		try (ResultSet rs = metaData.getColumns(null,
+				tableMeta.getTableSchem(),
+				tableMeta.getTableName(),
+				"%")) {
 
 			List<ColumnMeta> columnMetaList = new ArrayList<>();
 

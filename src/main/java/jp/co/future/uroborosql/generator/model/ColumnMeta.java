@@ -1,8 +1,13 @@
 package jp.co.future.uroborosql.generator.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jp.co.future.uroborosql.generator.config.EntityConfig;
 import jp.co.future.uroborosql.generator.util.DataTypes;
 import jp.co.future.uroborosql.utils.CaseFormat;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Column metadata
@@ -10,6 +15,7 @@ import jp.co.future.uroborosql.utils.CaseFormat;
  * @author Kenichi Hoshi
  */
 public class ColumnMeta {
+    private static final List<String> DIGITS_TYPE = Arrays.asList("BigDecimal", "Long", "Short", "Integer");
     private String columnName;
     private int dataType;
     private String typeName;
@@ -77,7 +83,7 @@ public class ColumnMeta {
     }
 
     public String getRemarks() {
-        return remarks;
+        return StringEscapeUtils.escapeHtml4(remarks);
     }
 
     public void setRemarks(String remarks) {
@@ -140,6 +146,22 @@ public class ColumnMeta {
      */
     public boolean isLockVersion() {
         return columnName.equalsIgnoreCase(entityConfig.getLockVersionName());
+    }
+
+    /**
+     * Get validation name.
+     *
+     * @return validation name
+     * If java simple type is not the case, return <code>null</code>,
+     */
+    public String getBeanValidationDataType() {
+        final String javaSimpleType = getJavaSimpleType();
+        if("String".equals(javaSimpleType)) {
+                return "Size";
+        }else if(DIGITS_TYPE.contains(javaSimpleType)) {
+                return "Digits";
+        }
+        return null;
     }
 
     @Override

@@ -53,4 +53,4 @@ $ mvn -Pentity -Dpackage.name=com.example
 
 Released under the [MIT License](https://github.com/shout-star/uroborosql-generator/blob/master/LICENSE).
 
-Copyright (c) 2017 KENICHI HOSHI.
+Copyright (c) 2017-2018 KENICHI HOSHI.

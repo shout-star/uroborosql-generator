@@ -52,4 +52,12 @@ public class EntityConfig {
 	public String getExcludeColumnPattern() {
 		return getProperty("exclude.column.pattern");
 	}
+
+	public boolean getEnabledBeanValidation() {
+		return "true".equalsIgnoreCase(getProperty("enabled.bean.validation"));
+	}
+
+	public String getClassNameSuffix() {
+		return getProperty("class.name.suffix");
+	}
 }
